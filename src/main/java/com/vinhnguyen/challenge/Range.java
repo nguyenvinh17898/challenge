@@ -1,17 +1,17 @@
 package com.vinhnguyen.challenge;
 
-public class Range {
-	private int lowerbound;
-	private int upperbound;
+public class Range<T extends Comparable>{
+	private T lowerbound;
+	private T upperbound;
 	private String type;
 
-	private Range(int lowerbound, int upperbound) {
+	private Range(T lowerbound, T upperbound) {
 		super();
 		this.lowerbound = lowerbound;
 		this.upperbound = upperbound;
 	}
 
-	public Range(int lowerbound, int upperbound, String type) {
+	public Range(T lowerbound, T upperbound, String type) {
 		super();
 		this.lowerbound = lowerbound;
 		this.upperbound = upperbound;
@@ -41,16 +41,16 @@ public class Range {
 	 * @param number
 	 * @return
 	 */
-	public boolean contains(int number) {
+	public boolean contains(T value) {
 		switch (this.type) {
 		case "open":
-			return (number > this.lowerbound && number < this.upperbound);
+			return (value.compareTo(this.lowerbound) > 0  && value.compareTo(this.upperbound) < 0);
 		case "closed":
-			return (number >= this.lowerbound && number <= this.upperbound);
+			return (value.compareTo(this.lowerbound) >= 0  && value.compareTo(this.upperbound) <= 0);
 		case "openClosed":
-			return (number > this.lowerbound && number <= this.upperbound);
+			return (value.compareTo(this.lowerbound) > 0  && value.compareTo(this.upperbound) <= 0);
 		case "closedOpen":
-			return (number >= this.lowerbound && number < this.upperbound);
+			return (value.compareTo(this.lowerbound) >= 0  && value.compareTo(this.upperbound) < 0);
 		default:
 			throw new IllegalArgumentException("Failed!");
 		}
@@ -63,9 +63,9 @@ public class Range {
 	 * @param uppbound
 	 * @return
 	 */
-	public static Range open(int lowbound, int uppbound) {
+	public static <T extends Comparable<T>> Range<T> open(T lowbound, T uppbound) {
 		// validate
-		if (lowbound > uppbound) {
+		if (lowbound.compareTo(uppbound) > 0) {
 			throw new IllegalArgumentException("lowerbound must be less than upperbound");
 		}
 
@@ -80,9 +80,9 @@ public class Range {
 	 * @param uppbound
 	 * @return
 	 */
-	public static Range closed(int lowbound, int uppbound) {
+	public static <T extends Comparable<T>> Range<T> closed(T lowbound, T uppbound) {
 		// validate
-		if (lowbound > uppbound) {
+		if (lowbound.compareTo(uppbound) > 0) {
 			throw new IllegalArgumentException("lowerbound must be less than upperbound");
 		}
 
@@ -97,14 +97,14 @@ public class Range {
 	 * @param uppbound
 	 * @return
 	 */
-	public static Range openClosed(int lowbound, int uppbound) {
+	public static <T extends Comparable<T>> Range<T> openClosed(T lowbound, T uppbound) {
 		// validate
-		if (lowbound > uppbound) {
+		if (lowbound.compareTo(uppbound) > 0) {
 			throw new IllegalArgumentException("lowerbound must be less than upperbound");
 		}
 
 		// create new object
-		return new Range(lowbound, uppbound, "openClosed");
+		return new Range(lowbound, uppbound, "closed");
 	}
 	
 	/**
@@ -114,9 +114,9 @@ public class Range {
 	 * @param uppbound
 	 * @return
 	 */
-	public static Range closedOpen(int lowbound, int uppbound) {
+	public static <T extends Comparable<T>> Range<T> closedOpen(T lowbound, T uppbound) {
 		// validate
-		if (lowbound > uppbound) {
+		if (lowbound.compareTo(uppbound) > 0) {
 			throw new IllegalArgumentException("lowerbound must be less than upperbound");
 		}
 
